@@ -29,8 +29,6 @@ jobs:
         with:
           node-version: 16
       - run: npm ci
-      # or one-off:
-      - run: npm install opendal
       - uses: actions/github-script@v6
         with:
           script: |
