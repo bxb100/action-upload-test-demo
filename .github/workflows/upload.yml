@@ -42,9 +42,9 @@ jobs:
               if (entry === null) {
                 break;
               }
-              let meta = await op.stat(entry.path);
+              let meta = await op.stat(entry.path());
               if (meta.isFile) {
-                file.push(entry.path);
+                file.push(entry.path());
               }
             }
 
