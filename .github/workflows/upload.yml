@@ -21,3 +21,33 @@ jobs:
             '!./exclude'
             !.git
             !.github
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      # or one-off:
+      - run: npm install opendal
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            const {Operator} = require("opendal")
+            const op = new Operator("webdav", { root: "/test-issue/", endpoint: "https://dav.jianguoyun.com/dav", username: "${{secrets.webdav_username}}", password: "${{secrets.webdav_password}}" });
+            
+            const lister = await op.list("/");
+            let file = [];
+            while (true) {
+              const entry = await lister.next();
+              if (entry === null) {
+                break;
+              }
+              let meta = await op.stat(entry.path);
+              if (meta.isFile) {
+                file.push(entry.path);
+              }
+            }
+
+            console.log(file)
