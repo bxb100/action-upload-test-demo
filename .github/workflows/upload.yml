@@ -47,5 +47,13 @@ jobs:
                 file.push(entry.path());
               }
             }
-
             console.log(file)
+            const assert = require('node:assert');
+            assert.deepEqual(file, [
+              '.gitignore',
+              'README.md',
+              'include',
+              'include.file',
+              'package-lock.json',
+              'package.json'
+            ])
